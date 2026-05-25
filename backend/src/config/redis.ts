@@ -5,6 +5,7 @@ export const redisConnection = new IORedis({
   host: env.redis.host,
   port: env.redis.port,
   maxRetriesPerRequest: null,
+  ...(env.redis.tls ? { tls: {} } : {}),
 });
 
 redisConnection.on('connect', () => {
