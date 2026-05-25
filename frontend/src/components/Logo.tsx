@@ -33,7 +33,7 @@ export function Logo({ size = 36, withWordmark = true, className = '' }: Props) 
         />
       </svg>
       {withWordmark && (
-        <span className="text-[20px] font-extrabold tracking-tight text-ink-900">
+        <span className="text-[20px] font-extrabold tracking-tight text-ink-900 dark:text-white">
           VedaAI
         </span>
       )}
