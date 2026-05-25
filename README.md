@@ -109,7 +109,7 @@ The app covers the full pipeline: a Next.js form captures the teacher's intent, 
 
 - Node.js 18+ (20 LTS recommended)
 - Docker + Docker Compose (or MongoDB + Redis running locally)
-- An OpenAI API key
+- A Groq API key
 
 ---
 
@@ -132,11 +132,11 @@ This starts:
 
 ```bash
 cd backend
-cp .env.example .env        # fill in OPENAI_API_KEY
+cp .env.example .env        # fill in GROQ_API_KEY
 npm install
 ```
 
-The default `.env` works for local Mongo + Redis. Edit `OPENAI_API_KEY`. Optionally change `OPENAI_MODEL`.
+The default `.env` works for local Mongo + Redis. Edit `GROQ_API_KEY`. Optionally change `GROQ_MODEL`.
 
 Run the API server and the worker in **two terminals**:
 
@@ -160,6 +160,47 @@ npm run dev
 ```
 
 App is at `http://localhost:3000`.
+
+---
+
+## Deploying to Vercel + Render
+
+### Frontend on Vercel
+
+- Import the `frontend/` folder as a Vercel project.
+- Framework preset: Next.js.
+- Build command: `npm install && npm run build`
+- Output is handled automatically by Vercel.
+
+Set these environment variables in Vercel:
+
+- `NEXT_PUBLIC_API_URL=https://your-render-backend.onrender.com`
+- `NEXT_PUBLIC_WS_URL=https://your-render-backend.onrender.com`
+- `NEXT_PUBLIC_GOOGLE_CLIENT_ID` if you use Google sign-in
+
+### Backend on Render
+
+- Create a Node web service from the `backend/` folder.
+- Build command: `npm install && npm run build`
+- Start command: `npm run start`
+- Add a second Render worker service from the same `backend/` folder.
+- Worker start command: `npm run start:worker`
+
+Set these environment variables in Render:
+
+- `PORT=4000` or the port Render assigns
+- `NODE_ENV=production`
+- `CLIENT_ORIGIN=https://your-vercel-frontend.vercel.app`
+- `MONGO_URI` from MongoDB Atlas
+- `REDIS_HOST` and `REDIS_PORT` from your Redis provider
+- `GROQ_API_KEY` from the Groq dashboard
+- `GROQ_MODEL` if you want to override the default model
+- `JWT_SECRET` as a long random string
+- `JWT_EXPIRES` if you want a custom token lifetime
+- `GOOGLE_CLIENT_ID` if you use Google sign-in
+
+For `MONGO_URI`, create a cluster in MongoDB Atlas and copy the connection string.
+For Redis, use a hosted Redis provider that gives you a standard TCP host and port.
 
 ---
 
