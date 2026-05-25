@@ -162,7 +162,7 @@ export function ToolkitView() {
           </p>
         )}
 
-        <div className="flex items-center justify-end gap-2">
+        <div className="flex items-center justify-center gap-2 md:justify-end">
           <button
             type="submit"
             disabled={loading || !topic.trim()}
