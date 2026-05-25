@@ -33,31 +33,31 @@ The full pipeline:
 ## Screenshots
 
 ### Login & Authentication
-![Login](https://i.imgur.com/placeholder-login.png)
+![Login](https://raw.githubusercontent.com/satyansh911/VedaAI-Assignment/main/frontend/public/images/login.png)
 > Google OAuth + Email/Password authentication with JWT
 
 ### Dashboard — Assignments
-![Dashboard](https://i.imgur.com/placeholder-dashboard.png)
+![Dashboard](https://raw.githubusercontent.com/satyansh911/VedaAI-Assignment/main/frontend/public/images/dashboard.png)
 > View all assignments with status badges, filter by group, and dark mode support
 
 ### Create Assignment
-![Create](https://i.imgur.com/placeholder-create.png)
+![Create](https://raw.githubusercontent.com/satyansh911/VedaAI-Assignment/main/frontend/public/images/createassignment.png)
 > Describe your assignment, set question types, upload a PDF/TXT source (optional)
 
 ### Generated Question Paper
-![Paper](https://i.imgur.com/placeholder-paper.png)
+![Paper](https://raw.githubusercontent.com/satyansh911/VedaAI-Assignment/main/frontend/public/images/generatedquestionpaper.png)
 > Structured paper with sections, difficulty badges, MCQ options, answer key, and one-click PDF export
 
 ### My Groups
-![Groups](https://i.imgur.com/placeholder-groups.png)
+![Groups](https://raw.githubusercontent.com/satyansh911/VedaAI-Assignment/main/frontend/public/images/mygroups.png)
 > Organise assignments into class groups with colour labels
 
 ### AI Teacher's Toolkit
-![Toolkit](https://i.imgur.com/placeholder-toolkit.png)
+![Toolkit](https://raw.githubusercontent.com/satyansh911/VedaAI-Assignment/main/frontend/public/images/aiteachertoolkit.png)
 > Generate lesson plans, rubrics, and study notes from a topic description
 
 ### Settings & Dark Mode
-![Settings](https://i.imgur.com/placeholder-settings.png)
+![Settings](https://raw.githubusercontent.com/satyansh911/VedaAI-Assignment/main/frontend/public/images/settings.png)
 > Profile management and dark/light theme toggle
 
 ---
