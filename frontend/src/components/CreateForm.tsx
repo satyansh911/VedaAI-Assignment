@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, FormEvent, useEffect } from 'react';
+import { useState, FormEvent, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ArrowLeft, ArrowRight, CalendarPlus, Mic, Plus, Loader2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CalendarPlus, Mic, MicOff, Plus, Loader2 } from 'lucide-react';
 import { useAssignmentStore } from '@/store/assignmentStore';
 import { api } from '@/lib/api';
 import { Group } from '@/types/group';
@@ -29,6 +29,8 @@ export function CreateForm() {
   const [errors, setErrors] = useState<FieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
   const [groups, setGroups] = useState<Group[]>([]);
+  const [listening, setListening] = useState(false);
+  const recognitionRef = useRef<{ stop: () => void; abort: () => void } | null>(null);
 
   useEffect(() => {
     api
@@ -61,6 +63,38 @@ export function CreateForm() {
     if (!form.questionTypes.length) e.questionTypes = 'Add at least one question type';
     setErrors(e);
     return Object.keys(e).length === 0;
+  }
+
+  function toggleMic() {
+    if (listening) {
+      recognitionRef.current?.stop();
+      recognitionRef.current = null;
+      setListening(false);
+      return;
+    }
+    const SR = (window as unknown as { SpeechRecognition?: typeof SpeechRecognitionEvent; webkitSpeechRecognition?: typeof SpeechRecognitionEvent }).SpeechRecognition
+      ?? (window as unknown as { webkitSpeechRecognition?: typeof SpeechRecognitionEvent }).webkitSpeechRecognition;
+    if (!SR) {
+      alert('Speech recognition is not supported in this browser.');
+      return;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const rec = new (SR as any)();
+    rec.continuous = true;
+    rec.interimResults = false;
+    rec.lang = 'en-US';
+    rec.onresult = (e: SpeechRecognitionEvent) => {
+      const transcript = Array.from(e.results)
+        .slice(e.resultIndex)
+        .map((r) => r[0].transcript)
+        .join(' ');
+      setForm({ additionalInstructions: (form.additionalInstructions + ' ' + transcript).trimStart() });
+    };
+    rec.onerror = () => { setListening(false); recognitionRef.current = null; };
+    rec.onend = () => { setListening(false); recognitionRef.current = null; };
+    recognitionRef.current = rec;
+    rec.start();
+    setListening(true);
   }
 
   async function onSubmit(ev: FormEvent<HTMLFormElement>) {
@@ -250,11 +284,12 @@ export function CreateForm() {
             />
             <button
               type="button"
-              className="absolute right-3 bottom-3 w-8 h-8 rounded-full bg-ink-100 dark:bg-surface-dark-2 hover:bg-ink-200 flex items-center justify-center text-ink-700 dark:text-ink-300"
-              aria-label="Voice input"
-              title="Voice input (coming soon)"
+              onClick={toggleMic}
+              className={`absolute right-3 bottom-3 w-8 h-8 rounded-full flex items-center justify-center transition-colors ${listening ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse' : 'bg-ink-100 dark:bg-surface-dark-2 hover:bg-ink-200 text-ink-700 dark:text-ink-300'}`}
+              aria-label={listening ? 'Stop recording' : 'Voice input'}
+              title={listening ? 'Stop recording' : 'Speak to fill this field'}
             >
-              <Mic className="w-4 h-4" />
+              {listening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
             </button>
           </div>
         </div>
