@@ -5,6 +5,7 @@
 html,
 body {
   height: 100%;
+  overflow-x: hidden;
   background: #eeeeee;
   color: #1a1a1a;
   font-feature-settings: 'cv11', 'ss01';

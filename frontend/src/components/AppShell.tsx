@@ -31,7 +31,7 @@ export function AppShell({ children, topBar, assignmentCount }: Props) {
 
         <main className="flex-1 flex flex-col min-w-0 gap-4 overflow-hidden">
           <TopBar title={topBar?.title} variant={topBar?.variant} />
-          <div className="flex-1 overflow-y-auto pb-20 lg:pb-4">{children}</div>
+          <div className="flex-1 overflow-y-auto overflow-x-hidden pb-20 lg:pb-4">{children}</div>
         </main>
       </div>
 
